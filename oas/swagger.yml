@@ -1,44 +1,44 @@
 openapi: 3.0.1
 info:
-  title: Product API
-  description: PactFlow Product API demo
+  title: QA API
+  description: PactFlow QA API demo
   version: 1.0.0
 paths:
-  /products:
+  /QAs:
     post:
-      summary: Create a product
-      description: Creates a new product
-      operationId: createProduct
+      summary: Create a QA
+      description: Creates a new QA
+      operationId: createQA
       requestBody:
-        description: Create a new Product
+        description: Create a new QA
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/QA'
             examples:
               application/json:
                 value:
-                  id: "1234"
-                  type: "food"
-                  price: 42
+                  id: "1"
+                  name: "paddy"
+                  age: 42
       responses:
         "200":
           description: successful operation
           content:
             "application/json; charset=utf-8":
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/QA'
               examples:
                 application/json:
                   value:
                     id: "1234"
-                    type: "food"
-                    price: 42
+                    name: "paddy"
+                    age: 42
     get:
-      summary: List all products
-      description: Returns all products
-      operationId: getAllProducts
+      summary: List all QAs
+      description: Returns all QAs
+      operationId: getAllQAs
       responses:
         "200":
           description: successful operation
@@ -47,28 +47,28 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: '#/components/schemas/Product'
+                  $ref: '#/components/schemas/QA'
               examples:
                 application/json:
                   value:
                     - id: "1234"
-                      type: "food"
-                      price: 42
+                      name: "food"
+                      age: 42
                       # name: "pizza"
                       # version: "1.0.0"
                       # see https://github.com/apiaryio/dredd/issues/1430 for why
         "400":
           description: Invalid ID supplied
           content: {}
-  /product/{id}:
+  /QA/{id}:
     get:
-      summary: Find product by ID
-      description: Returns a single product
-      operationId: getProductByID
+      summary: Find QA by ID
+      description: Returns a single QA
+      operationId: getQAByID
       parameters:
         - name: id
           in: path
-          description: ID of product to get
+          description: ID of QA to get
           schema:
             type: string
           required: true
@@ -79,13 +79,13 @@ paths:
           content:
             "application/json; charset=utf-8":
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/QA'
               examples:
                 application/json:
                   value:
                     id: "1234"
-                    type: "food"
-                    price: 42
+                    name: "food"
+                    age: 42
                     # name: "pizza"
                     # version: "1.0.0"
                     # see https://github.com/apiaryio/dredd/issues/1430 for why
@@ -93,24 +93,24 @@ paths:
           description: Invalid ID supplied
           content: {}
         "404":
-          description: Product not found
+          description: QA not found
           content: {}
 components:
   schemas:
-    Product:
+    QA:
       type: object
       required:
         - id
         - name
-        - price
+        - age
       properties:
         id:
           type: string
-        type:
-          type: string
         name:
+          type: string
+        surname:
           type: string
         version:
           type: string
-        price:
+        age:
           type: number

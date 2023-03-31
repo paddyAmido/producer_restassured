@@ -9,21 +9,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
 @Entity
-class Product {
+class QA {
   @JsonFormat( shape = JsonFormat.Shape.STRING)
   private @Id Long id;
   private String name;
-  private String type;
+  private String surname;
   private String version;
-  private Double price;
+  private Integer age;
 
-  Product() {}
+  QA() {}
 
-  Product(Long id, String name, String type, String version, Double price) {
+  QA(Long id, String name, String surname, String version, Integer age) {
     this.id = id;
     this.name = name;
-    this.type = type;
+    this.surname = surname;
     this.version = version;
-    this.price = price;
+    this.age = age;
   }
 }

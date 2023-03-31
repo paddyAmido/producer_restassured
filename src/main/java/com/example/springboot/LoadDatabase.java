@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 class LoadDatabase {
 
   @Bean
-  CommandLineRunner initDatabase(ProductRepository repository) {
+  CommandLineRunner initDatabase(QARepository repository) {
     return args -> {
-      log.info("Preloading " + repository.save(new Product(1L, "Burger", "Aussie with avocade, egg, bacon and beetroot", "1.0.0", 10.50)));
-      log.info("Preloading " + repository.save(new Product(2L, "Chips", "Sweet potato fries", "1.2.3", 3.49)));
+      log.info("Preloading " + repository.save(new QA(1L, "Patrick", "Hendron", "1.0.0", 28)));
+      log.info("Preloading " + repository.save(new QA(2L, "Ross", "Aubery-Smith", "1.2.3", 21)));
     };
   }
 }

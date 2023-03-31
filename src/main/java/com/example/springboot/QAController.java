@@ -15,49 +15,49 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @CrossOrigin(origins = { "*" })
 @RequestMapping(value = "/", produces = "application/json; charset=utf-8")
-class ProductController {
+class QAController {
 
-  private final ProductRepository repository;
+  private final QARepository repository;
 
-  ProductController(ProductRepository repository) {
+  QAController(QARepository repository) {
     this.repository = repository;
   }
 
-  @GetMapping("/products")
-  List<Product> all() {
+  @GetMapping("/QAs")
+  List<QA> all() {
     return repository.findAll();
   }
 
-  @PostMapping("/products")
-  Product newProduct(@RequestBody Product newProduct) {
+  @PostMapping("/QAs")
+  QA newQA(@RequestBody QA newQA) {
     try {
-      return repository.save(newProduct);
+      return repository.save(newQA);
     } catch (Exception e) {
       throw new BadRequestException();
     }
   }
 
-  @GetMapping({ "/product/{id}" })
-  Product one(@PathVariable Long id) {
+  @GetMapping({ "/QA/{id}" })
+  QA one(@PathVariable Long id) {
 
-    return repository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+    return repository.findById(id).orElseThrow(() -> new QANotFoundException(id));
   }
 
-  @PutMapping({ "/product/{id}" })
-  Product replaceProduct(@RequestBody Product newProduct, @PathVariable Long id) {
+  @PutMapping({ "/QA/{id}" })
+  QA replaceQA(@RequestBody QA newQA, @PathVariable Long id) {
 
-    return repository.findById(id).map(Product -> {
-      Product.setName(newProduct.getName());
-      Product.setType(newProduct.getType());
-      return repository.save(Product);
+    return repository.findById(id).map(QA -> {
+      QA.setName(newQA.getName());
+      QA.setSurname(newQA.getSurname());
+      return repository.save(QA);
     }).orElseGet(() -> {
-      newProduct.setId(id);
-      return repository.save(newProduct);
+      newQA.setId(id);
+      return repository.save(newQA);
     });
   }
 
-  @DeleteMapping({ "/product/{id}" })
-  void deleteProduct(@PathVariable Long id) {
+  @DeleteMapping({ "/QA/{id}" })
+  void deleteQA(@PathVariable Long id) {
     repository.deleteById(id);
   }
 }

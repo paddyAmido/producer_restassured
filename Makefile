@@ -1,7 +1,6 @@
-PACTICIPANT := "pact-test-paddy"
+PACTICIPANT := "pact-test-paddy-provider"
 GITHUB_REPO := "pactflow/example-bi-directional-provider-restassured"
 PACT_CLI_DOCKER_VERSION?=latest
-#PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
 PACT_CLI_DOCKER_RUN_COMMAND?= docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:0.50.0.28
 PACT_BROKER_COMMAND=pact-broker
 PACTFLOW_CLI_COMMAND=pactflow
@@ -22,6 +21,12 @@ VERIFIER_TOOL?=postman
 ## Only deploy from main
 ## ====================
 
+ifeq ($(BRANCH),master)
+	DEPLOY_TARGET=deploy
+else
+	DEPLOY_TARGET=no_deploy
+endif
+
 all: test
 
 ## ====================
@@ -41,19 +46,20 @@ publish_provider_contract:
 	${PACTFLOW_CLI_COMMAND} publish-provider-contract \
       ${OAS_PATH} \
       --provider ${PACTICIPANT} \
-      --provider-app-version 3a0994c \
+      --provider-app-version ${VERSION} \
       --branch test-master \
       --content-type application/yaml \
       --verification-exit-code=${EXIT_CODE} \
       --verification-results report.txt \
       --verification-results-content-type text/plain\
-      --verifier postman
+      --verifier restassured
 
 # Run the ci target from a developer machine with the environment variables
 # set as if it was on GitHub Actions
 # Use this for quick feedback when playing around with your workflows.
 pact:
 	make publish_pact;
+
 
 deploy_target: can_i_deploy $(DEPLOY_TARGET)
 
@@ -83,4 +89,4 @@ deploy_app: record_deployment
 	@echo "Deploying to prod"
 
 record_deployment:
-	@${PACT_BROKER_CLI_COMMAND} record_deployment --pacticipant ${PACTICIPANT} --version ${VERSION} --environment production
+	@${PACT_BROKER_CLI_COMMAND} record_deployment --pacticipant ${PACTICIPANT} --version ${VERSION} --environment QAion
